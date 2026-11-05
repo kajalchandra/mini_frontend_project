@@ -1,55 +1,52 @@
 import { useDispatch, useSelector } from "react-redux"
 import { toggleMenu } from "../utils/sidebarSlice"
 import { useState,useEffect } from "react"
-import { SEARCH_API } from "../utils/constants"
+
 import { cacheResults } from "../utils/searchSlice"
 
 
 const Header = () =>{
- const [searchtxt, setsearchtxt]= useState(" ")
- const [suggestion,setsuggestion]= useState([])
- const [showSuggestion, setshowSuggestion]= useState(false)
-  const dispatch = useDispatch()
-//subscribe to the store
-const searchCache = useSelector((store) => store.search)
-//console.log('search cache',searchCache)
-useEffect(()=>{
-const timer =  setTimeout(()=>{
+ const [searchtxt, setsearchtxt] = useState(" ");
+  const [suggestion, setsuggestion] = useState([]);
+  const [showSuggestion, setshowSuggestion] = useState(false);
 
-  if(searchCache[searchtxt]){
-   setsuggestion(searchCache[searchtxt])
-  
-  }else{
-    searchSuggestions()
-  }
-   
-  },200)
+  const dispatch = useDispatch();
+  const searchCache = useSelector((store) => store.search);
 
-return ()=>{
-  clearTimeout(timer)
-}  
- 
-},[searchtxt])
+  useEffect(() => {
+    const searchSuggestions = async () => {
+      const data = await fetch(
+        "http://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=" +
+          searchtxt
+      );
 
+      const json = await data.json();
 
-const searchSuggestions = async () =>{
-    const data = await fetch("http://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q="+searchtxt)
-    const json = await data.json()
-    //console.log('value of json',json)
-    setsuggestion(json[1])
-    dispatch(cacheResults({
-      [searchtxt] : json[1]
-    }))
+      setsuggestion(json[1]);
 
-}
-useEffect(() =>{
- 
-  //console.log('suggestions',suggestion)
-},[suggestion])
+      dispatch(cacheResults({ [searchtxt]: json[1] }));
+    };
 
-  const handleMenu = () =>{
-        dispatch(toggleMenu())
-  }
+    const timer = setTimeout(() => {
+      if (searchCache[searchtxt]) {
+        setsuggestion(searchCache[searchtxt]);
+      } else {
+        searchSuggestions();
+      }
+    }, 200);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [searchtxt, searchCache, dispatch]);
+
+  useEffect(() => {
+    // console.log("suggestions", suggestion);
+  }, [suggestion]);
+
+  const handleMenu = () => {
+    dispatch(toggleMenu());
+  };
     return(
         //notes on grid
         <div className="grid grid-flow-col p-5 shadow-lg"> 

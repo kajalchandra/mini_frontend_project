@@ -2,9 +2,9 @@ import { useEffect, useState } from "react"
 import { VIDEO_API } from "../utils/constants"
 import VideoCart from "./VideoCart"
 import Shimmer from "./Shimmer"
-import WatchPage from "./WatchPage"
+
 import { Link } from "react-router-dom"
-import { adCart } from "./VideoCart"
+
 
 
 const VideoContainer = () =>{

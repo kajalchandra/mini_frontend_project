@@ -58,7 +58,7 @@ const  commentData = [
 //making a comment component
 const Comment = ({data})=>{
    // console.log('value of data ',data)
-   const {name,text,replies} = data
+   const {name,text} = data
     return(
         <div className="flex m-4 shadow-sm bg-gray-100 p-2 rounded-lg">
             <div>
