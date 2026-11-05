@@ -1,0 +1,24 @@
+grid-flow-col: This means the grid items will flow horizontally in rows, 
+filling one row after another and wrapping to the next row if necessary. 
+Items are placed column by column, rather than row by row.
+Equivalent in regular CSS:
+In regular CSS, this is equivalent to using the grid-auto-flow property:
+
+css
+Copy code
+grid-auto-flow: column;
+This means grid items are placed in columns, where each new item is placed next to the
+previous one horizontally (i.e., in the same row), and once that row is full, 
+it wraps to the next row.
+
+
+
+//for col-span-1 in regular css
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* A grid with 3 equal columns */
+}
+
+.grid-item {
+  grid-column: span 1; /* This makes the item span 1 column */
+}

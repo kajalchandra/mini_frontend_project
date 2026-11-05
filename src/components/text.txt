@@ -1,0 +1,51 @@
+//commentList recursion 
+Let's clarify recursion step by step with a simplified approach so you can understand how it's working in the CommentList component.
+
+Key Concepts:
+Recursion means a function is calling itself. In your case, the CommentList component calls itself inside its own definition to handle nested comments.
+Base Case is when recursion stops. In this case, recursion stops when there are no replies (i.e., replies: []).
+Now, let’s dry-run your code with a simple example, focusing only on how recursion works.
+
+Structure Recap:
+You have a list of comments. Each comment can have replies, which are also comments. This means comments can be nested. To handle nested comments, CommentList is called recursively for each level of replies.
+
+Simplified Dry Run:
+Start with CommentData:
+Initially, you have the commentData array with multiple comments.
+The first CommentList call processes all the comments at the top level (i.e., those without parents).
+js
+Copy code
+CommentList(commentData); // commentData has 4 comments
+Processing the First Comment (kajal):
+The Comment for "kajal" is rendered.
+Now, it checks if "kajal" has any replies. It does! So, it calls CommentList recursively with the replies of "kajal", which contains a reply from "neel".
+js
+Copy code
+CommentList([neel's reply]); // Recursively handling "neel's" comment
+Processing Reply (neel):
+The Comment for "neel" is rendered.
+Now, it checks if "neel" has any replies. It does! So, it calls CommentList recursively with the reply of "neel", which is another comment by "kajal".
+js
+Copy code
+CommentList([kajal's reply to neel]); // Recursively handling reply from "kajal"
+Processing Reply (kajal again):
+The Comment for "kajal" is rendered again (as a reply to "neel").
+This time, there are no further replies (replies: []), so recursion stops here for this branch and returns back.
+Going Back:
+Once the replies for "neel" are fully processed, the recursion goes back up to the first "kajal" comment. Since the replies are now fully processed, it moves to the next top-level comment in commentData.
+
+Visualization of the Process:
+Top-level comment: "kajal"
+
+Replies: ["neel"]
+Replies: ["kajal"]
+Replies: [] (Recursion stops here)
+Next top-level comment: "niya"
+
+Replies: ["vishwas"]
+Replies: ["jaya"]
+Replies: [] (Recursion stops here)
+Conclusion:
+The recursion works by going into each comment's replies. When there are no more replies (replies: []), it stops for that branch and goes back up to continue with the next comment. This way, the component handles deeply nested replies by calling itself recursively for each level.
+
+If you focus on how it drills down into replies and stops when there are no more, the pattern becomes clearer. 
